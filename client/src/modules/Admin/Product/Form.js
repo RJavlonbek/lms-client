@@ -199,7 +199,7 @@ class Form extends React.Component{
 		const {action}=this.state;
 		if(!loadingItem){
 			return(
-				<FormCard action={action} item={action=='edit'?item:{}} match={match} categories={categories} update={update} saving={saving}/>
+				<FormCard action={action} item={action==='edit'?item:{}} match={match} categories={categories} update={update} saving={saving}/>
 			);
 		}else{
 			return(

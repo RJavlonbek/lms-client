@@ -2,16 +2,8 @@ import React from 'react';
 import clsx from 'clsx';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import {Route} from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
@@ -53,14 +45,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Dashboard(props) {
+const Dashboard = (props)=>{
   const classes = useStyles();
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
   console.log('Dashboard',props);
 
   return (
     <React.Fragment>
-      <EmployeesList employees={props.employees} header="Employees" />
+      <EmployeesList header={"Employees"} />
       <Container maxWidth="lg" className={classes.container}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
@@ -74,20 +66,8 @@ function Dashboard(props) {
   );
 }
 
-const mapStateToProps=(state)=>{
-	return {
-    ...state.Dashboard
-  };
+Dashboard.propTypes = {
+
 }
 
-const mapDispatchToProps=(dispatch)=>{
-	return {
-  }
-}
-
-const DashboardContainer=connect(
-  mapStateToProps, 
-  mapDispatchToProps
-)(Dashboard);
-
-export default withTitle(DashboardContainer)('Dashboard');
+export default Dashboard;

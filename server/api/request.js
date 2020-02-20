@@ -12,7 +12,12 @@ const requestAPI={
 				}
 			});
 		}else{
-			Request.find({userId:req.session.user._id},(err,requests)=>{
+			let query = {};
+			if(req.session.user.role != 'admin'){
+				query = {userId:req.session.user._id};
+			}
+
+			Request.find(query, (err,requests)=>{
 				if(err) return next(err);
 				if(requests && requests.length){
 					res.json(requests);

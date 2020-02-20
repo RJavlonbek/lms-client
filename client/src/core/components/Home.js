@@ -6,8 +6,8 @@ const Home=(props)=>(
 	<Redirect to={'/admin'} />
 );
 
-// Home.propTypes={
-// 	title:PropTypes.string.isRequired
-// }
+Home.propTypes={
+	title:PropTypes.string.isRequired
+}
 
 export default Home;

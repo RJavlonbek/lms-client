@@ -132,7 +132,7 @@ export const MainListItems = ({items, accessRights})=>{
     if((accessRights && accessRights.length && accessRights.indexOf(menuItem.accessRightTitle)>=0) || !menuItem.accessRightTitle){
       let Icon=menuItem.icon;
       return(
-        <ListItem button>
+        <ListItem button key={i} >
           <ListItemIcon>
             <Icon />
           </ListItemIcon>
@@ -140,7 +140,7 @@ export const MainListItems = ({items, accessRights})=>{
             <ListItemText primary={menuItem.text} />
           </Link>
         </ListItem>
-      )
+      );
     }else{
       return
     }
@@ -153,6 +153,7 @@ export const MainListItems = ({items, accessRights})=>{
 }
 
 function AdminLayout(props) {
+  console.log('Layout',props);
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -224,7 +225,8 @@ const mapStateToProps=(state)=>{
 	return {
     title:state.Admin.title,
     menuItems:state.Admin.menuItems,
-    rights:state.Admin.user.rights
+    rights:state.Admin.user.rights,
+    user:state.Admin.user
   };
 }
 

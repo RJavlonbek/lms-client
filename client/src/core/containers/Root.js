@@ -3,19 +3,13 @@ import PropTypes from 'prop-types';
 import {Provider} from 'react-redux';
 import {Router, Route} from 'react-router-dom';
 
+import App from '../components/App';
+
 const Root=(props)=>{
-	console.log('Roots',props);
-	console.log('state',props.store.getState());
 	return(
 		<Provider store={props.store}>
 			<Router history={props.history}>
-				{props.routes.map((route,index) => (
-		            <Route key={index} path={route.path} render={(props) => {
-		            	return(
-		              		<route.component {...props} routes={route.routes} title={route.title} />
-		              	);
-		            }} />
-		        ))}
+				<App {...props} />
 			</Router>
 		</Provider>
 	);

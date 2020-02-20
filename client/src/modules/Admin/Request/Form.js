@@ -62,7 +62,7 @@ export function FormCard({request, match, themes, update, action, saving}) {
 
   		update(data).then((json)=>{
   			if(json.result==='success'){
-  				setRedirect('/admin/request');
+  				setRedirect('/admin/employees');
   			}
   		});
   		

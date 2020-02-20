@@ -1,7 +1,8 @@
 import {
-	Home as HomeIcon,
-	Dashboard as DashboardIcon,
-	Assignment as AssignmentIcon
+	DashboardOutlined as DashboardIcon,
+	VerifiedUserOutlined as EmployeeIcon,
+	ExtensionOutlined as ExtensionIcon,
+	LocalOfferOutlined as ProductIcon
 } from '@material-ui/icons';
 
 import Request, {reducer as requestReducer} from './Request';
@@ -16,6 +17,7 @@ export const SIGN_IN_REQ='Admin/SignInReq';
 export const SIGN_IN_RES='Admin/SignInRes';
 export const SET_TITLE='Admin/SetTitle';
 export const LOG_OUT='Admin/LogOut';
+export const ALERT='Admin/Alert';
 
 const route='/admin';
 
@@ -30,25 +32,25 @@ const defaultState={
 		text:'Employees',
 		accessRightTitle:'Employees',
 		link:route+'/employees',
-		icon:AssignmentIcon
+		icon:EmployeeIcon
 	},{
 		text:'Products',
 		accessRightTitle:'Products',
 		link:route+'/products',
-		icon:AssignmentIcon
+		icon:ProductIcon
 	},{
 		text:'Categories',
 		accessRightTitle:'Categories',
 		link:route+'/categories',
-		icon:AssignmentIcon
+		icon:ExtensionIcon
 	}]
 };
 
 const defaultUserState={
 	loggedIn:false, 
-	authenticating:false
+	authenticating:false,
+	loginAttempted:false
 }
-
 const userReducer=(state=defaultUserState,action)=>{
 	switch(action.type){
 		case SIGN_IN_REQ:
@@ -80,6 +82,22 @@ const userReducer=(state=defaultUserState,action)=>{
 	}
 }
 
+const defaultAlertState={
+	type:'success',
+	text: 'asd'
+}
+const alertReducer=(state=defaultAlertState, action)=>{
+	switch(action.type){
+		case ALERT:
+			return{
+				...state,
+				...action.payload
+			}
+		default:
+			return state
+	}
+}
+
 export const reducer=(state=defaultState, action)=>{
 	return {
 		...defaultState,
@@ -88,6 +106,7 @@ export const reducer=(state=defaultState, action)=>{
 		Product:productReducer(state.Product, action),
 		Category:categoryReducer(state.Category, action),
 		user:userReducer(state.user,action),
+		alert:alertReducer(state.alert, action),
 		title:((s,a)=>{
 			if(a.type===SET_TITLE){
 				return a.payload;

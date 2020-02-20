@@ -12,8 +12,8 @@ import routes from './routes';
 
 import * as serviceWorker from './serviceWorker';
 
-console.log('routes',routes);
-console.log('store',store);
+//console.log('routes',routes);
+//console.log('store',store);
 
 ReactDOM.render(
 	<AppContainer>
@@ -27,4 +27,4 @@ ReactDOM.render(
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+serviceWorker.register();

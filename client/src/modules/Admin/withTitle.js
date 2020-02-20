@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {SET_TITLE} from './index';
 
 const withTitle=(Component)=>(title)=>{
+	//console.log('with title', Component);
 	const ComponentWithTitle=(props)=>{
 		props.setTitle(title);
 

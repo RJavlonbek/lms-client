@@ -1,92 +1,129 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import { ThemeProvider } from '@material-ui/styles';
 
-import {SIGN_IN_REQ, SIGN_IN_RES} from './index.js';
+import Login from './Login';
 
-export default function withAuth(ComponentToProtect, protectedModule='') {
-  class ProtectedComponent extends Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        redirect: false,
-        loading:true,
-        hasAccessRight:true
-      };
-    }
-    componentDidMount() {
-      console.log('withAuth mounted');
-      this.props.getActiveUser().then((user)=>{
-        var hasAccessRight=true;
-        var redirect=false;
+import theme from './theme';
+import { SIGN_IN_REQ, SIGN_IN_RES, ALERT } from './index.js';
 
-        if(user && user._id){
-          if(protectedModule && !(user.rights.indexOf(protectedModule)>=0)){
-            hasAccessRight=false
-          }
-        }else{
-          redirect=true;
+export default function withAuth(ComponentToProtect, protectedModule = '', path = '') {
+    class ProtectedComponent extends Component {
+        constructor(props) {
+            super(props);
+            this.state = {
+                redirect: false,
+                loading: true,
+                hasAccessRight: true
+            };
         }
+        componentDidMount() {
+            this.getUser().then((user) => {
+                var hasAccessRight = true;
+                var redirect = false;
 
-        this.setState({
-          redirect,
-          loading:false,
-          hasAccessRight
-        });
+                if (user && user._id) {
+                    if (protectedModule && !(user.rights.indexOf(protectedModule) >= 0)) {
+                        hasAccessRight = false;
+                    }
+                } else {
+                    redirect = true;
+                }
 
-        // checking access right of a user for protected component
-      });
-    }
-    render() {
-      console.log('withAuth',protectedModule);
-      const {redirect, loading, hasAccessRight} = this.state;
-      const props=this.props;
+                this.setState({
+                    redirect,
+                    loading: false,
+                    hasAccessRight
+                });
+            });
+        }
+        getUser = () => {
+            // checks the state whether there exists an active user, if no, active user should be fetched from backend
+            return new Promise((resolve, reject) => {
+                if (this.props.user && this.props.user.loggedIn) {
+                    resolve(this.props.user);
+                } else {
+                    this.props.getActiveUser().then((user) => {
+                        resolve(user);
+                    });
+                }
+            });
+        }
+        render() {
+            console.log('withAuth', protectedModule);
+            const { redirect, loading, hasAccessRight } = this.state;
+            const props = this.props;
 
-      if(loading){
-        return <LinearProgress />;
-      }
+            if (props.location.pathname === (props.match.path + '/login')) {
+                return (
+                    <ThemeProvider theme={theme}>
+            <Login />
+          </ThemeProvider>
+                );
+            }
 
-      if(!hasAccessRight){
-        console.log('has no access right',props.user.rights);
-        console.log(props.user.rights.indexOf(protectedModule));
-        props.history.goBack();
-      }
+            if (loading) {
+                return <LinearProgress />;
+            }
 
-      if (!props.user.loggedIn && redirect) {
-        window.localStorage.setItem('lastVisitedPath',this.props.location.pathname);
-        console.log('redirecting', props.match.path+"/login");
-        return <Redirect to={'/admin/login'} />;
-      }
+            if (!hasAccessRight) {
+                console.log('has no access right', props.user.rights);
+                props.history.goBack();
+            }
 
-      return (
-        <React.Fragment>
+            if (!props.user.loggedIn && redirect) {
+                window.localStorage.setItem('lastVisitedPath', this.props.location.pathname);
+                console.log('redirecting', props.match.path + "/login");
+                return <Redirect to={'/admin/login'} />;
+            }
+
+            return (
+                <React.Fragment>
           <ComponentToProtect {...this.props} />
         </React.Fragment>
-      );
+            );
+        }
     }
-  }
 
-  const mapStateToProps=state=>{
-    return {
-      user:state.Admin.user
+    const mapStateToProps = state => {
+        return {
+            user: state.Admin.user
+        }
     }
-  }
 
-  const mapDispatchToProps=dispatch=>{
-    return{
-      getActiveUser:()=>{
-        dispatch({type:SIGN_IN_REQ});
-        return fetch('/api/user/active').then((res)=>res.ok?res.json():{}).then((json)=>{
-          dispatch({
-            type:SIGN_IN_RES,
-            payload:json ? json.user : {}
-          });
-          return json.user;
-        });
-      }
+    const mapDispatchToProps = dispatch => {
+        return {
+            getActiveUser: () => {
+                dispatch({ type: SIGN_IN_REQ });
+                return fetch('/api/user/active').then((res) => res.json()).then((json) => {
+                    dispatch({
+                        type: SIGN_IN_RES,
+                        payload: json.user
+                    });
+                    return json.user;
+                }).catch((err) => {
+                    // end request
+                    dispatch({
+                        type: SIGN_IN_RES,
+                        payload: {}
+                    });
+
+                    // error
+                    console.error(err);
+                    dispatch({
+                        type: ALERT,
+                        payload: {
+                            type: 'error',
+                            text: 'Connection with server failed...'
+                        }
+                    });
+                    return {}
+                });
+            }
+        }
     }
-  }
 
-  return connect(mapStateToProps, mapDispatchToProps)(ProtectedComponent)
+    return connect(mapStateToProps, mapDispatchToProps)(ProtectedComponent)
 }

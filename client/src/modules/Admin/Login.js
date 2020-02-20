@@ -14,8 +14,12 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import {CircularProgress} from '@material-ui/core';
 
-import {SIGN_IN_REQ, SIGN_IN_RES} from './index';
+import Alert from './components/Alert';
+
+import {SIGN_IN_REQ, SIGN_IN_RES, ALERT} from './index';
+import {alertError} from '../functions';
 
 function Copyright() {
   return (
@@ -67,11 +71,14 @@ class Login extends React.Component{
 		this.setState({[name]:value});
 	}
 	submitHandler=()=>{
-		this.props.signIn(this.state.email,this.state.password);
+		const {signIn} = this.props;
+		signIn(this.state.email,this.state.password);
 	}
 	render(){
 		const {signIn,user,match}=this.props;
 		const {email,password}=this.state;
+
+		console.log('Login', this.props);
 
 		if(user && user.loggedIn){
 			let redirectUrl=window.localStorage.getItem('lastVisitedPath');
@@ -81,18 +88,19 @@ class Login extends React.Component{
 		}
 
 		return (
-		  <Container component="main" maxWidth="xs">
-		    <CssBaseline />
-		    <LoginForm changeHandler={this.changeHandler} submitHandler={this.submitHandler} failed={user.loginFailed} />
-		    <Box mt={8}>
-		      <Copyright />
-		    </Box>
-		  </Container>
+		  	<Container component="main" maxWidth="xs">
+			    <CssBaseline />
+			    <LoginForm changeHandler={this.changeHandler} submitHandler={this.submitHandler} failed={user.loginFailed} authenticating={user.authenticating} />
+			    <Alert />
+			    <Box mt={8}>
+			      	<Copyright />
+			    </Box>
+		  	</Container>
 		);
 	}
 }
 
-const LoginForm=({changeHandler,submitHandler, failed})=>{
+const LoginForm=({changeHandler,submitHandler, failed, authenticating})=>{
 	const classes = useStyles();
 	return(
 		<div className={classes.paper}>
@@ -139,8 +147,9 @@ const LoginForm=({changeHandler,submitHandler, failed})=>{
 			      variant="contained"
 			      color="primary"
 			      className={classes.submit}
+			      disabled={authenticating}
 			    >
-			      Sign In
+			      {authenticating ? <CircularProgress /> : 'Sign In' }
 			    </Button>
 			    <Grid container>
 			      <Grid item xs>
@@ -168,7 +177,6 @@ const mapStateToProps=state=>{
 const mapDispatchToProps=dispatch=>{
 	return {
 		signIn:(username,password)=>{
-			console.log('signing in',username+password);
 			dispatch({
 				type:SIGN_IN_REQ
 			});
@@ -179,7 +187,7 @@ const mapDispatchToProps=dispatch=>{
 			        'Accept': 'application/json',
 			        'Content-Type': 'application/json'
 			    }
-			}).then((res)=>res.ok?res.json():{}).then((json)=>{
+			}).then((res)=>res.json()).then((json)=>{
 				dispatch({
 					type:SIGN_IN_RES,
 					payload:json.user
@@ -187,6 +195,27 @@ const mapDispatchToProps=dispatch=>{
 				if(json.result==='success'){
 					
 				}
+			}).catch((err)=>{
+				// end sign in request
+				dispatch({
+					type:SIGN_IN_RES,
+					payload:{}
+				});
+
+				// alert error
+				dispatch({
+					type:ALERT,
+					payload:{
+						type:'error',
+						text: 'Connection with server failed...'
+					}
+				});
+			});
+		},
+		alert:(options)=>{
+			dispatch({
+				type: ALERT,
+				payload: options
 			});
 		}
 	}

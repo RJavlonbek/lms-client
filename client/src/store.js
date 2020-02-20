@@ -3,11 +3,18 @@ import {createLogger} from 'redux-logger';
 import modules from './modules';
 import {flatModules} from './modules/functions';
 
-const createAppStore = (reducer, ...middleware) => {
+const createAppStore = (reducer) => {
+  let middleware = [];
+  if (process.env.NODE_ENV === 'development') {
+    const logger=createLogger();
+    middleware = [...middleware, logger];
+  } else {
+    middleware = [...middleware];
+  }
   //middleware.push(thunk)
   const store = createStore(
     reducer,
-    applyMiddleware(createLogger())
+    applyMiddleware(...middleware)
   );
   return store
 }

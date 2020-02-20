@@ -41,7 +41,8 @@ const userAPI={
 	getActive:(req,res,next)=>{
 		res.json({
 			result:'success',
-			user:req.session.user || {}
+			user:req.session.user || {},
+			session:req.session
 		});
 	},
 	logout:(req,res,next)=>{

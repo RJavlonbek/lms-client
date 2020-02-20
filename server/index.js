@@ -9,7 +9,8 @@ const authMiddleware=require('./middleware/auth.js');
 var app=express();
 
 // Connect database
-const mongoDBUrl='mongodb://178.33.123.109:27017/t1-form';
+//const mongoDBUrl='mongodb://178.33.123.109:27017/t1-form';
+const mongoDBUrl='mongodb+srv://javlonbek:12345rj98@fintech-ahsxv.mongodb.net/react-starter?retryWrites=true&w=majority';
 mongoose.connect(mongoDBUrl,{useNewUrlParser:true});
 mongoose.connection.once('open',function(){
   console.log('Connected to the database');
@@ -43,7 +44,8 @@ app.use('/api',authMiddleware,require('./api/index.js'));
 
 app.use(function(req,res,next){
   if(app.get('env')==='development'){
-    res.send('default response');
+    res.sendFile(path.join(__dirname,'..','client','build','index.html'));
+    //res.send('default response');
   }else{
     console.log('env',app.get('env'));
     res.sendFile(path.join(__dirname,'..','client','build','index.html'));
