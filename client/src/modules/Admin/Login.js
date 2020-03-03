@@ -90,7 +90,7 @@ class Login extends React.Component{
 		return (
 		  	<Container component="main" maxWidth="xs">
 			    <CssBaseline />
-			    <LoginForm changeHandler={this.changeHandler} submitHandler={this.submitHandler} failed={user.loginFailed} authenticating={user.authenticating} />
+			    <LoginForm changeHandler={this.changeHandler} submitHandler={this.submitHandler} failed={user.loginAttempted} authenticating={user.authenticating} />
 			    <Alert />
 			    <Box mt={8}>
 			      	<Copyright />
@@ -149,7 +149,7 @@ const LoginForm=({changeHandler,submitHandler, failed, authenticating})=>{
 			      className={classes.submit}
 			      disabled={authenticating}
 			    >
-			      {authenticating ? <CircularProgress /> : 'Sign In' }
+			    	{authenticating ? <CircularProgress /> : 'Sign In' }
 			    </Button>
 			    <Grid container>
 			      <Grid item xs>
@@ -190,7 +190,10 @@ const mapDispatchToProps=dispatch=>{
 			}).then((res)=>res.json()).then((json)=>{
 				dispatch({
 					type:SIGN_IN_RES,
-					payload:json.user
+					payload:{
+						...json.user,
+						loginAttempted: true
+					}
 				});
 				if(json.result==='success'){
 					

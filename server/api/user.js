@@ -46,7 +46,7 @@ const userAPI={
 		});
 	},
 	logout:(req,res,next)=>{
-		req.session.user={};
+		req.session.user=null;
 		res.end();
 	}
 }

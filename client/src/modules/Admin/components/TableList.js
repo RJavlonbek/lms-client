@@ -199,7 +199,7 @@ const MyTable=({columnNames, rows, handleDelete, path, loading})=>{
 	if(!rows || loading){
 		tableRows = (
 			<TableRow>
-				<TableCell colspan={columnNames.length + 2} className={'text-center py-4'} >
+				<TableCell colSpan={columnNames.length + 2} className={'text-center py-4'} >
 					<CircularProgress className={classes.loader} />
 				</TableCell>
 			</TableRow>

@@ -18,6 +18,7 @@ export const SIGN_IN_RES='Admin/SignInRes';
 export const SET_TITLE='Admin/SetTitle';
 export const LOG_OUT='Admin/LogOut';
 export const ALERT='Admin/Alert';
+export const ALERT_CLOSE='Admin/AlertClose';
 
 const route='/admin';
 
@@ -70,28 +71,36 @@ const userReducer=(state=defaultUserState,action)=>{
 			}else{
 				return {
 					...state,
+					...action.payload,
 					loginFailed:true,
 					authenticating:false,
 					loggedIn:false
 				}
 			}
 		case LOG_OUT:
-			return defaultUserState
+			return defaultState
 		default:
 			return state;
 	}
 }
 
 const defaultAlertState={
-	type:'success',
-	text: 'asd'
+	type:'',
+	text: 'asd',
+	open:true
 }
 const alertReducer=(state=defaultAlertState, action)=>{
 	switch(action.type){
 		case ALERT:
 			return{
 				...state,
-				...action.payload
+				...action.payload,
+				open: true
+			}
+		case ALERT_CLOSE:
+			return{
+				open:false,
+				type:''
 			}
 		default:
 			return state

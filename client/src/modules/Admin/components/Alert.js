@@ -5,6 +5,8 @@ import Alert from '@material-ui/lab/Alert';
 import {Collapse} from '@material-ui/core';
 import {makeStyles} from '@material-ui/core/styles';
 
+import {ALERT_CLOSE} from '../index';
+
 const useStyles = makeStyles((theme)=>({
 	collapse:{
 		position:'absolute',
@@ -14,16 +16,18 @@ const useStyles = makeStyles((theme)=>({
 	}
 }))
 
-const CustomAlert =({type, text})=>{
+const CustomAlert =({type, text, close, open})=>{
 	const classes=useStyles();
-	const [open, setOpen] = React.useState(true)
-	console.log('alert rendering', text);
+	console.log('alert rendering', open);
 	if(!type){
 		return null;
 	}
+
+	setTimeout(()=>close(), 5000);
+
 	return(
 		<Collapse in={open} className={classes.collapse} >
-			<Alert severity={type} onClose={()=>setOpen(false)}>{text.toString()}</Alert>
+			<Alert severity={type} onClose={()=>close()}>{text.toString()}</Alert>
 		</Collapse>
 	);
 }
@@ -34,7 +38,17 @@ const mapStateToProps = state=>{
 	}
 }
 
-const CustomAlertContainer = connect(mapStateToProps)(CustomAlert);
+const mapDispatchToProps = (dispatch)=>{
+	return{
+		close:()=>{
+			dispatch({
+				type:ALERT_CLOSE
+			});
+		}
+	}
+}
+
+const CustomAlertContainer = connect(mapStateToProps, mapDispatchToProps)(CustomAlert);
 
 export default CustomAlertContainer;
 

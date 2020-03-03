@@ -197,15 +197,16 @@ class Form extends React.Component{
 		console.log('Edit item',this.props);
 		const {match, item, update, loadingItem, saving, categories}=this.props;
 		const {action}=this.state;
-		if(!loadingItem){
-			return(
-				<FormCard action={action} item={action==='edit'?item:{}} match={match} categories={categories} update={update} saving={saving}/>
-			);
-		}else{
+		
+		if(loadingItem){
 			return(
 				<LinearProgress />
 			)
 		}
+
+		return(
+			<FormCard action={action} item={action==='edit'?item:{}} match={match} categories={categories} update={update} saving={saving}/>
+		);
 	}
 }
 

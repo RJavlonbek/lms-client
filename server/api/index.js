@@ -11,7 +11,6 @@ router.post('/request/store',requestAPI.store);  // CREATE and UPDATE
 router.post('/request/delete',requestAPI.delete);
 
 router.post('/user/login', userAPI.login);
-router.get('/user/active',userAPI.getActive);
 router.get('/user/logout',userAPI.logout);
 
 router.get('/category/get',categoryAPI.get);

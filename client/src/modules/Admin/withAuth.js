@@ -97,7 +97,7 @@ export default function withAuth(ComponentToProtect, protectedModule = '', path 
         return {
             getActiveUser: () => {
                 dispatch({ type: SIGN_IN_REQ });
-                return fetch('/api/user/active').then((res) => res.json()).then((json) => {
+                return fetch('/user/active').then((res) => res.json()).then((json) => {
                     dispatch({
                         type: SIGN_IN_RES,
                         payload: json.user

@@ -39,6 +39,7 @@ app.post('*',function(req,res,next){
 });
 
 app.post('/admin/login',require('./api/user.js').login);
+app.get('/user/active', require('./api/user.js').getActive);
 
 app.use('/api',authMiddleware,require('./api/index.js'));
 

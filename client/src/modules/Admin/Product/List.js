@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {Route, Link} from 'react-router-dom';
 
 import {LOAD_ITEMS_REQ, LOAD_ITEMS_RES, DELETE_RES} from './index';
+import {ALERT} from '../index'; 
 import withTitle from '../withTitle';
 
 const TableList = lazy(()=>import('../components/TableList'));
@@ -66,7 +67,18 @@ const mapDispatchToProps=(dispatch)=>{
 			dispatch({
 				type:LOAD_ITEMS_REQ
 			});
-			return fetch('/api/product/get').then((res)=>res.ok?res.json():[]).then((items)=>{
+			return fetch('/api/product/get').then((res)=>{
+				if(res.ok) return res.json();
+
+				dispatch({
+					type: ALERT,
+					payload:{
+						type:'error',
+						text: 'Connection with server failed...'
+					}
+				});
+				return [];
+			}).then((items)=>{
 				dispatch({
 					type:LOAD_ITEMS_RES,
 					payload:{
