@@ -13,7 +13,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 
-import {ListContainer as EmployeesList} from '../Request/List';
+import {ListContainer as ArticlesList} from '../Article/List';
 import {SET_TITLE} from '../index';
 import withTitle from '../withTitle';
 
@@ -52,7 +52,7 @@ const Dashboard = (props)=>{
 
   return (
     <React.Fragment>
-      <EmployeesList header={"Employees"} />
+      <ArticlesList header={"Articles"} />
       <Container maxWidth="lg" className={classes.container}>
         <Grid container spacing={3}>
           <Grid item xs={12}>

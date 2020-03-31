@@ -2,13 +2,13 @@ import {
 	DashboardOutlined as DashboardIcon,
 	VerifiedUserOutlined as EmployeeIcon,
 	ExtensionOutlined as ExtensionIcon,
-	LocalOfferOutlined as ProductIcon
+	LocalOfferOutlined as ProductIcon,
+	DescriptionOutlined as ArticleIcon
 } from '@material-ui/icons';
 
-import Request, {reducer as requestReducer} from './Request';
 import Dashboard, {reducer as dashboardReducer} from './Dashboard';
-import Product, {reducer as productReducer} from './Product';
 import Category, {reducer as categoryReducer} from './Category';
+import Article, {reducer as ArticleReducer} from './Article';
 
 import Admin from './Admin';
 import {defineModule} from '../functions';
@@ -30,15 +30,15 @@ const defaultState={
 		link:route,
 		icon:DashboardIcon
 	},{
-		text:'Employees',
+		text:'Authors',
 		accessRightTitle:'Employees',
-		link:route+'/employees',
+		link:route+'/authors',
 		icon:EmployeeIcon
 	},{
-		text:'Products',
-		accessRightTitle:'Products',
-		link:route+'/products',
-		icon:ProductIcon
+		text:'Articles',
+		accessRightTitle:'Articles',
+		link:route+'/articles',
+		icon:ArticleIcon
 	},{
 		text:'Categories',
 		accessRightTitle:'Categories',
@@ -111,9 +111,8 @@ export const reducer=(state=defaultState, action)=>{
 	return {
 		...defaultState,
 		Dashboard:dashboardReducer(state.Dashboard, action),
-		Request:requestReducer(state.Request, action),
-		Product:productReducer(state.Product, action),
 		Category:categoryReducer(state.Category, action),
+		Article: ArticleReducer(state.Article, action),
 		user:userReducer(state.user,action),
 		alert:alertReducer(state.alert, action),
 		title:((s,a)=>{
@@ -127,10 +126,9 @@ export const reducer=(state=defaultState, action)=>{
 }
 
 export const children={
-	Request,
 	Dashboard,
-	Product,
-	Category
+	Category,
+	Article
 }
 
 export default defineModule('Admin',route, Admin, reducer, children);

@@ -3,6 +3,10 @@ var mongoose=require('mongoose');
 var path=require('path');
 var bodyParser=require('body-parser');
 var session=require('express-session');
+const fileUpload = require('express-fileupload');
+const slugUpdater = require('mongoose-slug-updater');
+
+mongoose.plugin(slugUpdater);
 
 const authMiddleware=require('./middleware/auth.js');
 
@@ -10,7 +14,7 @@ var app=express();
 
 // Connect database
 //const mongoDBUrl='mongodb://178.33.123.109:27017/t1-form';
-const mongoDBUrl='mongodb+srv://javlonbek:12345rj98@fintech-ahsxv.mongodb.net/react-starter?retryWrites=true&w=majority';
+const mongoDBUrl='mongodb+srv://javlonbek:12345rj98@fintech-ahsxv.mongodb.net/medium?retryWrites=true&w=majority';
 mongoose.connect(mongoDBUrl,{useNewUrlParser:true});
 mongoose.connection.once('open',function(){
   console.log('Connected to the database');
@@ -19,9 +23,9 @@ mongoose.connection.once('open',function(){
 });
 
 app.use(express.static(path.join(__dirname,'..','client','build')));
-
+app.use(fileUpload());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(session({
   cookie:{

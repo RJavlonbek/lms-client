@@ -47,9 +47,8 @@ const getRoutes = (modules, store, App, Home, title = 'Главная') => flatM
           : null
       }
     });
-
-    return route
   }
+  return route;
 });
 
 export default getRoutes(modules, store, App, Home);
