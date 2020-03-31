@@ -8,7 +8,7 @@ const slugUpdater = require('mongoose-slug-updater');
 
 mongoose.plugin(slugUpdater);
 
-const authMiddleware=require('./middleware/auth.js');
+const apiAuthMiddleware=require('./middleware/apiAuth.js');
 
 var app=express();
 
@@ -45,7 +45,7 @@ app.post('*',function(req,res,next){
 app.post('/admin/login',require('./api/user.js').login);
 app.get('/user/active', require('./api/user.js').getActive);
 
-app.use('/api',authMiddleware,require('./api/index.js'));
+app.use('/api',apiAuthMiddleware,require('./api/index.js'));
 
 app.use(function(req,res,next){
   if(app.get('env')==='development'){

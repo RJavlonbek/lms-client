@@ -19,6 +19,18 @@ code {
     monospace;
 }
 
+img{
+  width: 100%;
+}
+
+.flex-1{
+  flex: 1;
+}
+
+.fs-12{
+  font-size: .75rem;
+}
+
 .mt-2{
   margin-top: 1rem;
 }
@@ -102,4 +114,37 @@ a, a:hover{
   .form-card{
     max-width: 100%;
   }
+}
+
+
+/*** STYLES FOR ARTICLE MODULE ****/
+.article-item-v1 .image-box{
+  width: 152px;
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+}
+.article-item .content-box{
+  flex: 1;
+  margin-right: 20px;
+}
+.article-item .title{
+  font-weight: 600;
+}
+.article-item .subtitle{
+  font-size: 0.8rem;
+}
+.article-item .reason-text{
+  font-size: 0.8rem;
+}
+.article-item .author{
+  font-size: 0.8rem;
+}
+.article-item .bookmark-button, .article-item .actions-button{
+  font-size: 1.5rem;
+  opacity: 0.7;
+}
+.dot-separator:after{
+  content: '\00B7';
+  font-weight: 600;
 }

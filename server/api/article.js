@@ -49,7 +49,7 @@ const articleAPI={
 				if(extension){
 					filename = '/article/' + article._id + '.' + extension;
 					article.image = {
-						url: path.join(cloudUrl, filename)
+						url: cloudUrl + filename
 					};
 				}
 				
@@ -73,12 +73,20 @@ const articleAPI={
 			article.paragraphs = paragraphs;
 			article.userId=req.session.user._id;
 
+			if(extension){
+				filename = '/article/' + article._id + '.' + extension;
+				article.image = {
+					url: cloudUrl + filename
+				};
+			}
+
 			article.save(function(err,result){
 				if(err) return next(err);
 				result.populate('category',(err,populatedArticle)=>{
 					res.json({
 						result:'success',
-						data:populatedArticle
+						data:populatedArticle,
+						filename
 					});
 				});
 			});

@@ -2,9 +2,10 @@ import React, {useState, lazy, Suspense} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import {Route, Link} from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
-import {LOAD_ITEMS_REQ, LOAD_ITEMS_RES, DELETE_RES} from './index';
+import ArticleItem from '../components/ArticleItem';
+
+import {LOAD_ITEMS_REQ, LOAD_ITEMS_RES} from '../index';
 
 class List extends React.Component{
 	constructor(props){
@@ -19,9 +20,15 @@ class List extends React.Component{
 	render(){
 		console.log('Articles List',this.props);
 		const {match, items, loadingItems, showDeleteDialog, onDelete, deleteDialogOpen, deleteId, header}=this.props;
+
+		let itemsToDisplay = items.map((article, i)=>{
+			return(
+				<ArticleItem article={article} /> 
+			)
+		});
 		return(
-			<div className='m-4'>
-				Main PAge
+			<div className='row'>
+				{itemsToDisplay}
 			</div>
 		);
 	}
@@ -34,9 +41,10 @@ List.propTypes={
 }
 
 const mapStateToProps=(state)=>{
-	const s=state.Admin.Article;
+	const s=state.Article;
 	return {
-		...s
+		items: s.items,
+		shouldLoadItems: s.shouldLoadItems
 	}
 }
 
@@ -56,26 +64,6 @@ const mapDispatchToProps=(dispatch)=>{
 						items
 					}
 				});
-			});
-		},
-		onDelete:(deleteId)=>{
-			var b={
-				id:deleteId
-			}
-			return fetch('/api/article/delete',{
-				method:'POST',
-				body:JSON.stringify(b),
-				headers: {
-			        'Accept': 'application/json',
-			        'Content-Type': 'application/json'
-			    }
-			}).then((res)=>res.ok?res.json():{}).then((json)=>{
-				if(json.result && json.result==='success'){
-					dispatch({
-						type:DELETE_RES,
-						payload:{item:json.data}
-					});
-				}
 			});
 		}
 	}
