@@ -27,9 +27,10 @@ export const flatModules = modules => Object.keys(modules).map(x => {
 
 // function for uploading files to my PHP Cloud (cloud.javelin.uz). It is being used because of that Heroku Apps are not able to handle file uploading
 export const fileUpload = (file, filename)=>{
+	console.log('uploading', filename)
 	return new Promise((resolve, reject)=>{
 		if(!filename){
-			resolve({
+			return resolve({
 				result: 'success',
 				message: 'no need for uploading to cloud'
 			})
@@ -64,4 +65,9 @@ export const fileUpload = (file, filename)=>{
 			});
 		});
 	});	
+}
+
+// Returns if a value is an object
+export const isObject = (value) => {
+	return value && typeof value === 'object' && value.constructor === Object;
 }

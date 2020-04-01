@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
+import {
+	Grid,
+	Box
+} from '@material-ui/core';
 import Table from '@material-ui/core/Table';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -55,6 +58,11 @@ const useStyles = makeStyles(theme => ({
   addButton:{
   	height:'100%',
   	float:'right'
+  },
+  imageCell:{
+  	backgroundSize: 'cover',
+  	backgroundPosition: 'center',
+  	height: '60px'
   }
 }));
 
@@ -207,6 +215,15 @@ const MyTable=({columnNames, rows, handleDelete, path, loading})=>{
 	}else{
 		tableRows=rows.map((row,i)=>{
 			let columns = row.columns.map((r, ind)=>{
+				let cellStyle={}
+				if(r.width){ cellStyle.width = r.width; }
+				if(r.type && r.type === 'image'){
+					return(
+						<TableCell key={r} padding={'none'} style={cellStyle}>
+							<Box className={classes.imageCell} style={{backgroundImage:'url('+r.url+')'}}></Box>
+						</TableCell>
+					);
+				}
 				return(
 					<TableCell key={ind} >{r.text}</TableCell>
 				);
@@ -223,15 +240,17 @@ const MyTable=({columnNames, rows, handleDelete, path, loading})=>{
 						/>
 					</TableCell>
 					{columns}
-				  	<TableCell align="right">
-				  		<Link to={path+'/edit/'+row._id}>
-				  			<Fab color='secondary' size='small' aria-label='Edit'>
-				  				<EditIcon />
-				  			</Fab>
-				  		</Link>
-				  		<Fab size='small' aria-label='Delete' className='ml-2' onClick={(e)=>handleDelete(e, row._id)}>
-				  			<DeleteIcon />
-				  		</Fab>
+				  	<TableCell>
+				  		<Box display='flex' justifyContent='flex-end'>
+					  		<Link to={path+'/edit/'+row._id}>
+					  			<Fab color='secondary' size='small' aria-label='Edit'>
+					  				<EditIcon />
+					  			</Fab>
+					  		</Link>
+					  		<Fab size='small' aria-label='Delete' className='ml-2' onClick={(e)=>handleDelete(e, row._id)}>
+					  			<DeleteIcon />
+					  		</Fab>
+					  	</Box>
 				  	</TableCell>
 				</TableRow>
 			);

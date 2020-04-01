@@ -20,7 +20,8 @@ const SelectMenu=({
 	className, 
 	changeHandler = (v)=>{},
 	multiple = false, // Boolean: whether multiple or not
-	itemType = 'simple' // String: represents view type of option items. Values: 'simple' || 'checkbox'
+	itemType = 'simple', // String: represents view type of option items. Values: 'simple' || 'checkbox'
+	label = ''
 })=>{
 	const [option, setOption] = React.useState(value ? value : (multiple ? [] : ''));
 	const classes = useStyles();
@@ -71,7 +72,7 @@ const SelectMenu=({
 	return(
     	<FormControl variant="outlined" margin="normal" className={classes.select + ' ' + className}>
     	    <InputLabel ref={inputLabel} id={"demo-simple-select-outlined-label"}>
-    	        Category
+    	        {label}
     	    </InputLabel>
     	    <Select
 	          	labelId="demo-simple-select-outlined-label"

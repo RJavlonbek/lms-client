@@ -8,7 +8,8 @@ import {
 
 import Dashboard, {reducer as dashboardReducer} from './Dashboard';
 import Category, {reducer as categoryReducer} from './Category';
-import Article, {reducer as ArticleReducer} from './Article';
+import Article, {reducer as articleReducer} from './Article';
+import Author, {reducer as authorReducer} from './Author';
 
 import Admin from './Admin';
 import {defineModule} from '../functions';
@@ -31,7 +32,7 @@ const defaultState={
 		icon:DashboardIcon
 	},{
 		text:'Authors',
-		accessRightTitle:'Employees',
+		accessRightTitle:'Authors',
 		link:route+'/authors',
 		icon:EmployeeIcon
 	},{
@@ -112,7 +113,8 @@ export const reducer=(state=defaultState, action)=>{
 		...defaultState,
 		Dashboard:dashboardReducer(state.Dashboard, action),
 		Category:categoryReducer(state.Category, action),
-		Article: ArticleReducer(state.Article, action),
+		Article: articleReducer(state.Article, action),
+		Author: authorReducer(state.Author, action),
 		user:userReducer(state.user,action),
 		alert:alertReducer(state.alert, action),
 		title:((s,a)=>{
@@ -128,7 +130,8 @@ export const reducer=(state=defaultState, action)=>{
 export const children={
 	Dashboard,
 	Category,
-	Article
+	Article,
+	Author
 }
 
 export default defineModule('Admin',route, Admin, reducer, children);

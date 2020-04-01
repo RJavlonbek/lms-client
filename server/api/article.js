@@ -13,7 +13,10 @@ const articleAPI={
 				}
 			});
 		}else{
-			Article.find({}).populate('category').exec((err,articles)=>{
+			Article.find({}).populate('category').populate({
+				path: 'author',
+				select: ['firstname', 'lastname', 'name', 'image', 'slug', 'description']
+			}).exec((err,articles)=>{
 				if(err) return next(err);
 				if(articles && articles.length){
 					res.json(articles);
@@ -45,6 +48,7 @@ const articleAPI={
 				article.subtitle=b.subtitle;
 				article.category=category;
 				article.paragraphs = paragraphs;
+				article.author = b.author;
 
 				if(extension){
 					filename = '/article/' + article._id + '.' + extension;
@@ -56,7 +60,10 @@ const articleAPI={
 
 				article.save(function(err,result){
 					if(err) return next(err);
-					result.populate('category',(err,populatedArticle)=>{
+					result.populate('category').populate({
+						path: 'author',
+						select: ['firstname', 'lastname', 'name', 'image', 'slug']
+					}, (err,populatedArticle)=>{
 						res.json({
 							result:'success',
 							data:populatedArticle,
@@ -70,6 +77,7 @@ const articleAPI={
 			article.title=b.title;
 			article.subtitle=b.subtitle;
 			article.category=category;
+			article.author = b.author;
 			article.paragraphs = paragraphs;
 			article.userId=req.session.user._id;
 

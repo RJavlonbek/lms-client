@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import {Route, Link} from 'react-router-dom';
 
 import {LOAD_ITEMS_REQ, LOAD_ITEMS_RES, DELETE_RES} from './index';
-import {ALERT} from '../index'; 
 import withTitle from '../withTitle';
 
 const TableList = lazy(()=>import('../components/TableList'));
@@ -14,37 +13,35 @@ class List extends React.Component{
 		super(props);
 	}
 	componentDidMount(){
-		const {items, loadItems, shouldLoadItems}=this.props;
-		if(shouldLoadItems){
+		const {items, loadItems}=this.props;
+		if(!(items && items.length)){
 			loadItems();
 		}
 	}
 	render(){
-		console.log('Articles List',this.props);
+		console.log('Category List',this.props);
 		const {match, items, loadingItems, showDeleteDialog, onDelete, deleteDialogOpen, deleteId, header}=this.props;
 		return(
 			<Suspense fallback={'Loading...'}>
 				<TableList
-					loading={loadingItems}
-					columnNames={['Article', 'Title', 'Category', 'Author']}
+					columnNames={['Author', 'Name']}
 					rows={items.map((item, i)=>{
 						return {
-							_id: item._id,
+							_id:item._id,
 							columns:[{
-								type:'image',
-								url: item.image.url
+								type: 'image',
+								url: item.image.url,
+								width: '60px'
 							},{
-								text: item.title
-							},{
-								text: item.category.map((c,i)=>c.name).join(',')
-							},{
-								text: item.author ? item.author.name : 'Blogger'
+								text: item.name
 							}]
 						}
 					})}
-					path={match ? match.path : '/admin/articles'}
+					path={match ? match.path : '/admin/authors'}
+					header={header}
 					onDelete={onDelete}
-					addItemText={'Add Article'}
+					addItemText={'Add Author'}
+					searchBoxPlaceholder={'search category'}
 				/>
 			</Suspense>
 		);
@@ -58,7 +55,7 @@ List.propTypes={
 }
 
 const mapStateToProps=(state)=>{
-	const s=state.Admin.Article;
+	const s=state.Admin.Author
 	return {
 		...s
 	}
@@ -70,18 +67,7 @@ const mapDispatchToProps=(dispatch)=>{
 			dispatch({
 				type:LOAD_ITEMS_REQ
 			});
-			return fetch('/api/article/get').then((res)=>{
-				if(res.ok) return res.json();
-
-				dispatch({
-					type: ALERT,
-					payload:{
-						type:'error',
-						text: 'Connection with server failed...'
-					}
-				});
-				return [];
-			}).then((items)=>{
+			return fetch('/api/author/get').then((res)=>res.ok?res.json():[]).then((items)=>{
 				dispatch({
 					type:LOAD_ITEMS_RES,
 					payload:{
@@ -94,7 +80,7 @@ const mapDispatchToProps=(dispatch)=>{
 			var b={
 				id:deleteId
 			}
-			return fetch('/api/article/delete',{
+			return fetch('/api/author/delete',{
 				method:'POST',
 				body:JSON.stringify(b),
 				headers: {
@@ -118,4 +104,4 @@ export const ListContainer=connect(
 	mapDispatchToProps
 )(List);
 
-export default withTitle(ListContainer)('Articles');
+export default withTitle(ListContainer)('Authors');

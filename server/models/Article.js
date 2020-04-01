@@ -6,6 +6,10 @@ var ArticleSchema=new mongoose.Schema({
 		type:String,
 		required:true
 	},
+	author:{
+		type: Types.ObjectId,
+		ref: 'Author'
+	},
 	slug:{
 		type:String,
 		unique:true,

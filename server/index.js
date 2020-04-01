@@ -5,6 +5,7 @@ var bodyParser=require('body-parser');
 var session=require('express-session');
 const fileUpload = require('express-fileupload');
 const slugUpdater = require('mongoose-slug-updater');
+const mongoStore = require('connect-mongodb-session')(session);
 
 mongoose.plugin(slugUpdater);
 
@@ -22,6 +23,15 @@ mongoose.connection.once('open',function(){
   console.log('There is an error in connecting db: '+error);
 });
 
+// setting mongodb for storing sessions, so that sessions can be saved, though when the server restarts
+const mongoDBSessionStore = new mongoStore({
+  uri: mongoDBUrl,
+  collection: 'sessions'
+});
+mongoDBSessionStore.on('error', (err)=>{
+  console.error('Connecting to mongoStore failed: ' + err);
+});
+
 app.use(express.static(path.join(__dirname,'..','client','build')));
 app.use(fileUpload());
 app.use(bodyParser.json());
@@ -33,7 +43,8 @@ app.use(session({
   },
   resave: true, 
   saveUninitialized: true, 
-  secret: 'JavlonbekProduction'
+  secret: 'JavlonbekProduction',
+  store: mongoDBSessionStore
 }));
 
 app.post('*',function(req,res,next){

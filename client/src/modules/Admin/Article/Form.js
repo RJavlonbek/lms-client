@@ -4,7 +4,10 @@ import PropTypes from 'prop-types';
 import {Route, Link, Redirect} from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Grid from '@material-ui/core/Grid';
+import {
+	Grid,
+	Box
+} from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -21,7 +24,11 @@ import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import Title from '../components/Title';
 import Selectmenu from '../components/Selectmenu';
 import Paragraphs from './components/Paragraphs';
-import {fileUpload} from '../../functions'; 
+import {
+	fileUpload,
+	isObject
+} from '../../functions'; 
+
 import {
 	LOAD_ITEM_REQ, 
 	LOAD_ITEM_RES, 
@@ -32,6 +39,10 @@ import {
 	LOAD_ITEMS_REQ as LOAD_CATEGORIES_REQ, 
 	LOAD_ITEMS_RES as LOAD_CATEGORIES_RES
 } from '../Category';
+import {
+	LOAD_ITEMS_REQ as LOAD_AUTHORS_REQ,
+	LOAD_ITEMS_RES as LOAD_AUTHORS_RES
+} from '../Author';
 import {SET_TITLE} from '../index';
 
 const useStyles = makeStyles(theme => ({
@@ -53,11 +64,12 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-export function FormCard({item, match, categories = [], update, action, saving}) {
+export function FormCard({item, match, categories = [], authors = [], update, action, saving}) {
   	const classes = useStyles();
   	const [redirect, setRedirect]=React.useState('');
   	const [title, setTitle] = React.useState(item.title);
   	const [category, setCategory] = React.useState(item.category || []);
+  	const [author, setAuthor] = React.useState(item.author ? (isObject(item.author) ? item.author._id : item.author) : '');
   	const [subtitle, setSubtitle] = React.useState(item.subtitle || '');
   	const [paragraphs, setParagraphs] = React.useState(item.paragraphs || [{content:''}]);
   	const [image, setImage] = React.useState(null);
@@ -69,6 +81,7 @@ export function FormCard({item, match, categories = [], update, action, saving})
   		data.append('title', title);
   		data.append('subtitle', subtitle);
   		data.append('category', JSON.stringify(category));
+  		data.append('author', author);
   		data.append('paragraphs', JSON.stringify(paragraphs));
   		data.append('image', image);
 
@@ -102,7 +115,7 @@ export function FormCard({item, match, categories = [], update, action, saving})
 	    <Container maxWidth="lg" className={classes.container}>
 	      	<Grid container spacing={3}>
 	      		<Grid item xs={6}>
-	      			<Link to={'/admin/products'}><Button variant='contained' color='primary'><ChevronLeft /> Back to list</Button></Link>
+	      			<Link to={'/admin/articles'}><Button variant='contained' color='primary'><ChevronLeft /> Back to list</Button></Link>
 	      		</Grid>
 	        	<Grid item xs={12}>
 	          		<Paper className={classes.paper}>
@@ -128,9 +141,19 @@ export function FormCard({item, match, categories = [], update, action, saving})
 	    	        		    		className={classes.selectCategory} 
 	    	        		    		multiple={true}
 	    	        		    		changeHandler={(val)=>setCategory(val)}
+	    	        		    		label = {"Category"}
 	    	        		    	/>
 	    	            	    </Grid>
-	    	            	    <Grid item xs={12}>
+	    	            	    <Grid item sm={6}>
+	    	        		    	<Selectmenu 
+	    	        		    		options={authors} 
+	    	        		    		value={author} 
+	    	        		    		className={classes.selectCategory}
+	    	        		    		changeHandler={setAuthor}
+	    	        		    		label = {"Author"}
+	    	        		    	/>
+	    	            	    </Grid>
+	    	            	    <Grid item xs={6}>
 	    	            	    	<Image image={item.image} />
 		    	            	    <Button
 		    	            	      variant="contained"
@@ -184,7 +207,7 @@ class Form extends React.Component{
 		}
 	}
 	componentDidMount(){
-		const {loadItem, match, setTitle, loadCategories, categories}=this.props;
+		const {loadItem, match, setTitle, loadCategories, categories, loadAuthors, authors}=this.props;
 		if(match.params.itemId){
 			setTitle('Edit article');
 			loadItem(match.params.itemId);
@@ -195,10 +218,14 @@ class Form extends React.Component{
 		if(!categories.length){
 			loadCategories();
 		}
+
+		if(!authors.length){
+			loadAuthors();
+		}
 	}
 	render(){
 		console.log('Edit item',this.props);
-		const {match, item, update, loadingItem, saving, categories}=this.props;
+		const {match, item, update, loadingItem, saving, categories, authors}=this.props;
 		const {action}=this.state;
 		
 		if(loadingItem){
@@ -208,7 +235,15 @@ class Form extends React.Component{
 		}
 
 		return(
-			<FormCard action={action} item={action==='edit'?item:{}} match={match} categories={categories} update={update} saving={saving}/>
+			<FormCard 
+				action={action} 
+				item={action==='edit'?item:{}} 
+				match={match} 
+				categories={categories}
+				authors={authors}
+				update={update} 
+				saving={saving}
+			/>
 		);
 	}
 }
@@ -218,19 +253,23 @@ const Image = ({image})=>{
 		return '';
 	}
 	return(
-		<img src={image.url}  width={"300px"}/>
+		<Box width={300}>
+			<img src={image.url}  />
+		</Box>
 	)
 }
 
 const mapStateToProps=(state)=>{
 	const s=state.Admin.Article;
 	const c=state.Admin.Category;
+	const a=state.Admin.Author;
 	return {
 		items:s.items,
 		item:s.item,
 		loadingItem:s.loadingItem,
 		saving:s.saving,
-		categories:c.items
+		categories:c.items,
+		authors: a.items
 	}
 }
 
@@ -286,6 +325,19 @@ const mapDispatchToProps=(dispatch)=>{
 					}
 				});
 			});
+		},
+		loadAuthors:()=>{
+			dispatch({
+				type: LOAD_AUTHORS_REQ
+			});
+			return fetch('/api/author/get').then((res)=>res.ok ? res.json() : []).then((authors)=>{
+				dispatch({
+					type: LOAD_AUTHORS_RES,
+					payload:{
+						items: authors
+					}
+				});
+			})
 		}
 	}
 }

@@ -76,6 +76,11 @@ a, a:hover{
   color: inherit;
 }
 
+.text-faded{
+  color: rgba(0,0,0,.54)!important;
+  fill: rgba(0,0,0,.54)!important;
+}
+
 /*        RESPONSIVE           */
 @media(max-width: 1400px){
   .form-card{
@@ -140,6 +145,10 @@ a, a:hover{
 .article-item .author{
   font-size: 0.8rem;
 }
+.article-item .author .author-name:hover{
+  text-decoration: underline;
+  cursor: pointer;
+}
 .article-item .bookmark-button, .article-item .actions-button{
   font-size: 1.5rem;
   opacity: 0.7;
@@ -147,4 +156,30 @@ a, a:hover{
 .dot-separator:after{
   content: '\00B7';
   font-weight: 600;
+}
+.popover .author-image-box{
+  width: 60px;
+  height: 60px;
+}
+.popover .author-image-box .author-image{
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+  border-radius: 50%;
+}
+.popover .author-description{
+  line-height: 1.4;
+}
+
+@media(max-width: 576px){
+  .article-item-v1 .image-box{
+    width: 120px;
+    height: unset;
+    background-position: top;
+    background-size: 100%;
+    background-repeat: no-repeat;
+  }
+  .article-item .content-box{
+    margin-right: 10px;
+  }
 }

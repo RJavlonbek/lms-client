@@ -19,7 +19,7 @@ class MainPage extends React.Component{
 		return(
 			<div className='container py-5'>
 				<div className='row'>
-					<div className='col-8'>
+					<div className='col-12 col-md-8'>
 						<ArticlesList />
 					</div>
 					<div className='col-4'>
