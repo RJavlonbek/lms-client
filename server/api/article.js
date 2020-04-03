@@ -4,7 +4,7 @@ const Article=require('../models/Article');
 const articleAPI={
 	get:function(req,res,next){
 		if(req.query.id){
-			Article.findById(req.query.id).populate('category').exec((err, article)=>{
+			return Article.findById(req.query.id).populate('category').exec((err, article)=>{
 				if(err) return next(err);
 				if(article && article._id){
 					res.json(article);
@@ -12,19 +12,36 @@ const articleAPI={
 					res.json({});
 				}
 			});
-		}else{
-			Article.find({}).populate('category').populate({
+		}
+
+		if(req.query.slug){
+			return Article.findOne({slug: req.query.slug}, 'title subtitle slug paragraphs image').populate({
+				path: 'category',
+				select: ['name']
+			}).populate({
 				path: 'author',
-				select: ['firstname', 'lastname', 'name', 'image', 'slug', 'description']
-			}).exec((err,articles)=>{
+				select: ['firstname', 'lastname', 'image', 'description']
+			}).exec((err, article)=>{
 				if(err) return next(err);
-				if(articles && articles.length){
-					res.json(articles);
-				}else{
-					res.json([]);
+				if(!article || !article._id){
+					return res.json({});
 				}
+
+				res.json(article);
 			});
 		}
+
+		Article.find({}).populate('category').populate({
+			path: 'author',
+			select: ['firstname', 'lastname', 'name', 'image', 'slug', 'description']
+		}).exec((err,articles)=>{
+			if(err) return next(err);
+			if(articles && articles.length){
+				res.json(articles);
+			}else{
+				res.json([]);
+			}
+		});
 	},
 	store:function(req,res,next){
 		const b=req.body;

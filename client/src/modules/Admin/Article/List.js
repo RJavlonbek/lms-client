@@ -32,7 +32,7 @@ class List extends React.Component{
 							_id: item._id,
 							columns:[{
 								type:'image',
-								url: item.image.url
+								url: item.image ? item.image.url : ''
 							},{
 								text: item.title
 							},{

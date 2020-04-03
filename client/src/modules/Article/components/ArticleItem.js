@@ -9,6 +9,8 @@ import {
 	PopoverBody
 } from 'reactstrap';
 
+import Image from './Image';
+
 const ArticleItem = ({article})=>{
 	return(
 		<div className='article-item article-item-v1 col-12 d-flex mb-3'>
@@ -35,8 +37,8 @@ const ArticleItem = ({article})=>{
 					</span>
 				</div>
 			</div>
-			<div className='image-box' style={{backgroundImage: 'url('+article.image.url+')'}}>
-				
+			<div className='image-box'>
+				<Image image={article.image} className={'article-image'} />
 			</div>
 		</div>
 	);
@@ -49,7 +51,7 @@ const Author = ({author}) =>{
 	}
 	return(
 		<div className='author'>
-			<span id={author.slug} className={"author-name"} dataToggle='tooltip' title={author.name}>{author.name} </span>
+			<span id={author.slug} className={"author-name"}>{author.name} </span>
 			<span className="author-group">in The Ascend </span>
 			<Popover 
 				placement='top' 
@@ -65,7 +67,7 @@ const Author = ({author}) =>{
 							<p className='author-description text-faded'>{author.description}</p>
 						</div>
 						<div className='author-image-box'>
-							<div className='author-image' style={{backgroundImage: 'url(' + author.image.url + ')'}}></div>
+							<Image className='author-image' image={author.image} />
 						</div>
 					</div>
 				</PopoverBody>
@@ -84,4 +86,5 @@ const Subtitle = ({subtitle, link}) =>{
 		</Link>
 	)
 }
+
 export default ArticleItem;

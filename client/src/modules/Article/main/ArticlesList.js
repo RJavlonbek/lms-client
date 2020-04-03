@@ -19,7 +19,13 @@ class List extends React.Component{
 	}
 	render(){
 		console.log('Articles List',this.props);
-		const {match, items, loadingItems, showDeleteDialog, onDelete, deleteDialogOpen, deleteId, header}=this.props;
+		const {items, loadingItems}=this.props;
+
+		if(loadingItems){
+			return(
+				<div>Loading...</div>
+			)
+		}
 
 		let itemsToDisplay = items.map((article, i)=>{
 			return(
@@ -44,6 +50,7 @@ const mapStateToProps=(state)=>{
 	const s=state.Article;
 	return {
 		items: s.items,
+		loadingItems: s.loadingItems,
 		shouldLoadItems: s.shouldLoadItems
 	}
 }

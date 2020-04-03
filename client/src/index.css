@@ -23,6 +23,12 @@ img{
   width: 100%;
 }
 
+.bg-image{
+  height: 100%;
+  background-position: center;
+  background-size: cover;
+}
+
 .flex-1{
   flex: 1;
 }
@@ -81,6 +87,10 @@ a, a:hover{
   fill: rgba(0,0,0,.54)!important;
 }
 
+.text-small{
+  font-size: 0.8rem;
+}
+
 /*        RESPONSIVE           */
 @media(max-width: 1400px){
   .form-card{
@@ -125,6 +135,8 @@ a, a:hover{
 /*** STYLES FOR ARTICLE MODULE ****/
 .article-item-v1 .image-box{
   width: 152px;
+}
+.article-item-v1 .article-image{
   height: 100%;
   background-position: center;
   background-size: cover;
@@ -171,6 +183,15 @@ a, a:hover{
   line-height: 1.4;
 }
 
+/** author version 1 **/
+.author-v1 .author-image-box{
+  height: 60px;
+  width: 60px;
+}
+.author-v1 .star svg{
+  margin-top: -2px;
+}
+
 @media(max-width: 576px){
   .article-item-v1 .image-box{
     width: 120px;
@@ -183,3 +204,4 @@ a, a:hover{
     margin-right: 10px;
   }
 }
+
