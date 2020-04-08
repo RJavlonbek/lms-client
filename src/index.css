@@ -1,0 +1,258 @@
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+        monospace;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+
+html {
+    font-size: 14px;
+}
+
+body {
+    margin: 0;
+    font-family: "Montserrat", "Oxygen",
+        "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 2px rgba(0, 0, 0, .1)
+}
+
+::-webkit-scrollbar {
+    background: hsla(0, 0%, 100%, .2);
+    position: absolute;
+    width: 2px;
+}
+
+::-webkit-scrollbar:hover {
+    display: block;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #bcbcbd
+}
+
+::-webkit-scrollbar:horizontal {
+    height: 2px
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+        monospace;
+}
+
+img {
+    width: 100%;
+}
+
+.bg-image {
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.fs-12 {
+    font-size: .75rem;
+}
+
+.mt-2 {
+    margin-top: 1rem;
+}
+
+.float-right {
+    float: right;
+}
+
+.ml-auto {
+    margin-left: auto;
+}
+
+.main-page {
+    padding: 3rem;
+}
+
+.main-page p {
+    font-weight: 600;
+}
+
+.button {
+    display: inline-block;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: #13c98a;
+    line-height: 1;
+    font-size: 1rem;
+    border: 0;
+    border-radius: 3rem;
+    color: #fff;
+    padding: 1rem 3rem;
+}
+
+.button:hover {
+    background-color: #2e09b6;
+}
+
+.form-data .form-value {
+    color: #aaa;
+}
+
+a,
+a:hover {
+    text-decoration: none;
+    color: inherit;
+}
+
+.text-faded {
+    color: rgba(0, 0, 0, .54) !important;
+    fill: rgba(0, 0, 0, .54) !important;
+}
+
+.text-small {
+    font-size: 0.8rem;
+}
+
+.rounded-500 {
+    border-radius: 500px !important;
+}
+
+/*        RESPONSIVE           */
+@media(max-width: 1400px) {
+    .form-card {
+        max-width: 40%;
+    }
+}
+
+@media(max-width: 1200px) {
+    .form-card {
+        max-width: 45%;
+    }
+}
+
+@media(max-width: 991px) {
+    html {
+        font-size: 14px;
+    }
+}
+
+@media(max-width: 768px) {
+    .form-card {
+        max-width: 60%;
+    }
+
+    .button {
+        padding: 1rem 2rem;
+    }
+}
+
+@media(max-width: 576px) {
+    html {
+        font-size: 12px;
+    }
+
+    .form-page,
+    .main-page {
+        padding: 2rem;
+    }
+
+    .form-card {
+        max-width: 100%;
+    }
+}
+
+
+/*** STYLES FOR ARTICLE MODULE ****/
+.article-item-v1 .image-box {
+    width: 152px;
+}
+
+.article-item-v1 .article-image {
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+}
+
+.article-item .content-box {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.article-item .title {
+    font-weight: 600;
+}
+
+.article-item .subtitle {
+    font-size: 0.8rem;
+}
+
+.article-item .reason-text {
+    font-size: 0.8rem;
+}
+
+.article-item .author {
+    font-size: 0.8rem;
+}
+
+.article-item .author .author-name:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.article-item .bookmark-button,
+.article-item .actions-button {
+    font-size: 1.5rem;
+    opacity: 0.7;
+}
+
+.dot-separator:after {
+    content: '\00B7';
+    font-weight: 600;
+}
+
+.popover .author-image-box {
+    width: 60px;
+    height: 60px;
+}
+
+.popover .author-image-box .author-image {
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.popover .author-description {
+    line-height: 1.4;
+}
+
+/** author version 1 **/
+.author-v1 .author-image-box {
+    height: 60px;
+    width: 60px;
+}
+
+.author-v1 .star svg {
+    margin-top: -2px;
+}
+
+@media(max-width: 576px) {
+    .article-item-v1 .image-box {
+        width: 120px;
+        height: unset;
+        background-position: top;
+        background-size: 100%;
+        background-repeat: no-repeat;
+    }
+
+    .article-item .content-box {
+        margin-right: 10px;
+    }
+}
