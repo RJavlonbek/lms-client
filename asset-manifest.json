@@ -1,0 +1,29 @@
+{
+  "files": {
+    "static/js/0.25be55b6.chunk.js": "/lms-client/static/js/0.25be55b6.chunk.js",
+    "static/js/0.25be55b6.chunk.js.map": "/lms-client/static/js/0.25be55b6.chunk.js.map",
+    "static/js/1.2a6c1a4a.chunk.js": "/lms-client/static/js/1.2a6c1a4a.chunk.js",
+    "static/js/1.2a6c1a4a.chunk.js.map": "/lms-client/static/js/1.2a6c1a4a.chunk.js.map",
+    "main.css": "/lms-client/static/css/main.38dc0c5d.chunk.css",
+    "main.js": "/lms-client/static/js/main.8e576ee5.chunk.js",
+    "main.js.map": "/lms-client/static/js/main.8e576ee5.chunk.js.map",
+    "runtime-main.js": "/lms-client/static/js/runtime-main.1c83a10c.js",
+    "runtime-main.js.map": "/lms-client/static/js/runtime-main.1c83a10c.js.map",
+    "static/css/4.de424728.chunk.css": "/lms-client/static/css/4.de424728.chunk.css",
+    "static/js/4.13ca6f75.chunk.js": "/lms-client/static/js/4.13ca6f75.chunk.js",
+    "static/js/4.13ca6f75.chunk.js.map": "/lms-client/static/js/4.13ca6f75.chunk.js.map",
+    "index.html": "/lms-client/index.html",
+    "precache-manifest.0ddb6e5cec0280160441ca7dd107b020.js": "/lms-client/precache-manifest.0ddb6e5cec0280160441ca7dd107b020.js",
+    "service-worker.js": "/lms-client/service-worker.js",
+    "static/css/4.de424728.chunk.css.map": "/lms-client/static/css/4.de424728.chunk.css.map",
+    "static/css/main.38dc0c5d.chunk.css.map": "/lms-client/static/css/main.38dc0c5d.chunk.css.map",
+    "static/js/4.13ca6f75.chunk.js.LICENSE.txt": "/lms-client/static/js/4.13ca6f75.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.1c83a10c.js",
+    "static/css/4.de424728.chunk.css",
+    "static/js/4.13ca6f75.chunk.js",
+    "static/css/main.38dc0c5d.chunk.css",
+    "static/js/main.8e576ee5.chunk.js"
+  ]
+}
